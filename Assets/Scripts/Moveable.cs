@@ -37,7 +37,7 @@ public class Moveable : MonoBehaviour
         sequence.Append(transform.DOMove(transform.position + (Vector3)direction * gm.TileSize, gm.TurnSpeed));
 
         await Task.Delay(TimeSpan.FromSeconds(gm.TurnSpeed));
-
+        
         canMove = true;
     }
 }

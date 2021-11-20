@@ -11,6 +11,9 @@ public class PlayerController : Moveable
 
     public LayerMask pushLayer;
 
+    public delegate void Turn();
+    public static event Turn OnTurn;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,6 +71,8 @@ public class PlayerController : Moveable
                     }
                 }
             }
+
+            OnTurn();
         }
     }
 }

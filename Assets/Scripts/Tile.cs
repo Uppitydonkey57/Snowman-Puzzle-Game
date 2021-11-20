@@ -14,6 +14,11 @@ public class Tile : MonoBehaviour
     void Start()
     {
         rend = GetComponent<SpriteRenderer>();
+
+        if (isTurned)
+        {
+            Turn();
+        }
     }
 
     // Update is called once per frame
@@ -24,7 +29,17 @@ public class Tile : MonoBehaviour
 
     public void Turn()
     {
+        if (rend == null) rend = GetComponent<SpriteRenderer>();
+
         rend.color = turnedColor;
         isTurned = true;
+    }
+
+    public void TurnBack()
+    {
+        if (rend == null) rend = GetComponent<SpriteRenderer>();
+
+        rend.color = Color.white;
+        isTurned = false;
     }
 }

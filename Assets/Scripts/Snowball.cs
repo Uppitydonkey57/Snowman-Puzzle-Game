@@ -12,7 +12,7 @@ public class Snowball : Moveable
 
     private Vector3 initialSize;
 
-    public int increases = 0;
+    [HideInInspector] public int increases = 0;
 
     [SerializeField] private LayerMask tileLayer;
 
@@ -34,9 +34,10 @@ public class Snowball : Moveable
 
     public void Push(Vector2 direction)
     {
-        Tile currentTile = Physics2D.OverlapPoint(transform.position, tileLayer).GetComponent<Tile>();
+        Tile currentTile = IsBlocked(Vector2.zero, tileLayer).GetComponent<Tile>();
+        WarmTile currentWarmTile = IsBlocked(Vector2.zero, tileLayer).GetComponent<WarmTile>();
 
-        Collider2D currentGoal = Physics2D.OverlapPoint(transform.position, goalLayer);
+        Collider2D currentGoal = Physics2D.OverlapPoint(transform.position + (Vector3)direction, goalLayer);
 
         if (currentGoal != null)
         {
@@ -47,18 +48,31 @@ public class Snowball : Moveable
         {
             if (increases < sizes)
             {
-                Vector3 scale = transform.localScale;
-
-                float sizeIncrease = (maxSize - initialSize.x) / sizes;
-
-                transform.DOScale(new Vector3(scale.x + sizeIncrease, scale.y + sizeIncrease, 0), gm.TurnSpeed);
-
-                increases++;
+                ChangeSize(1);
             }
 
             currentTile.Turn();
         }
 
+        if (currentWarmTile != null && !currentWarmTile.isTurned)
+        {
+            if (increases > 0)
+            {
+                ChangeSize(-1);
+            }
+        }
+
         Move(direction);
+    }
+
+    void ChangeSize(int amount)
+    {
+        Vector3 scale = transform.localScale;
+
+        float sizeIncrease = ((maxSize - initialSize.x) / sizes) * Mathf.Sign(amount);
+
+        transform.DOScale(new Vector3(scale.x + sizeIncrease, scale.y + sizeIncrease, 0), gm.TurnSpeed);
+
+        increases += amount;
     }
 }
