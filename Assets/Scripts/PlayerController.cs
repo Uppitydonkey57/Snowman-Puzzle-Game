@@ -72,7 +72,7 @@ public class PlayerController : Moveable
                 }
             }
 
-            OnTurn();
+            OnTurn.Invoke();
         }
     }
 }

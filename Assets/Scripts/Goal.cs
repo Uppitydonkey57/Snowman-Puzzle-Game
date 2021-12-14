@@ -8,12 +8,13 @@ public class Goal : MonoBehaviour
     public static event Won OnWin;
 
     public int sizeCap;
+    public int sizeMin;
 
     [SerializeField] private GameObject head;
 
     public void WinCheck(Snowball snowball)
     {
-        if (snowball.increases < sizeCap)
+        if (snowball.increases < sizeCap && snowball.increases > sizeMin)
         {
             snowball.gameObject.SetActive(false);
 

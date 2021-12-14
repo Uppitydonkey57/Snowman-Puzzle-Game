@@ -18,6 +18,10 @@ public class Snowball : Moveable
 
     [SerializeField] private LayerMask goalLayer;
 
+    [SerializeField] private LayerMask snowballLayer;
+
+    [SerializeField] private GameObject covering;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +41,14 @@ public class Snowball : Moveable
         Tile currentTile = IsBlocked(Vector2.zero, tileLayer).GetComponent<Tile>();
         WarmTile currentWarmTile = IsBlocked(Vector2.zero, tileLayer).GetComponent<WarmTile>();
 
+        GameObject snowballTileObject = IsBlocked(direction, snowballLayer);
+        Snowball snowballTile = null;
+
+        if (snowballTileObject != null)
+        {
+            snowballTile = snowballTileObject.GetComponent<Snowball>();
+        }
+
         Collider2D currentGoal = Physics2D.OverlapPoint(transform.position + (Vector3)direction, goalLayer);
 
         if (currentGoal != null)
@@ -49,6 +61,9 @@ public class Snowball : Moveable
             if (increases < sizes)
             {
                 ChangeSize(1);
+            } else
+            {
+                covering.SetActive(true);
             }
 
             currentTile.Turn();
@@ -60,6 +75,12 @@ public class Snowball : Moveable
             {
                 ChangeSize(-1);
             }
+        }
+
+        if (snowballTile != null)
+        {
+            //snowballTile.ChangeSize(sizes);
+            //Destroy(gameObject);
         }
 
         Move(direction);
